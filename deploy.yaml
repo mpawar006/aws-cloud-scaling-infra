@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+  labels:
+    app: website
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: website
+  template:
+    metadata:
+      labels:
+        app: website
+    spec:
+      # If the Docker Hub repo is private, create an imagePullSecret
+      # and uncomment the next three lines.
+      # imagePullSecrets:
+      # - name: regcred
+      containers:
+      - name: website
+        image: mpawar006/project2:latest        # Jenkins replaces :latest at deploy
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "64Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
