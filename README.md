@@ -1,8 +1,8 @@
-# Analytics Pvt Ltd: DevOps Automation Project
+# High-Availability AWS Infrastructure & Monolith-to-Microservices Migration
 
 ## 📝 Project Overview
 
-This project was developed for Analytics Pvt Ltd to address the growing demand for their product. It implements a comprehensive DevOps lifecycle to automate the deployment, scaling, and operation of their application containers. The solution replaces their previous monolithic architecture with a modern, containerized approach managed by Kubernetes, ensuring high availability and scalability.
+A cloud modernization project focused on migrating a legacy monolithic application to a scalable, containerized microservices architecture on AWS. Featuring a self-healing Kubernetes cluster with 2+ replicas and automated infrastructure management via Terraform.
 
 ---
 
