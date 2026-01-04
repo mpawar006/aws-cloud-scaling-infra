@@ -3,7 +3,7 @@
 ![Build Status](https://img.shields.io/badge/Jenkins-Pipeline--Success-green) ![Kubernetes](https://img.shields.io/badge/K8s-HPA--Active-blue) ![AWS](https://img.shields.io/badge/AWS-EKS/EC2-orange)
 
 ## 📝 Project Overview
-This project demonstrates a high-availability cloud modernization journey. We migrated a static monolithic site into a dynamic **Python Flask microservice** that provides real-time observability of Kubernetes pod resources. The infrastructure is fully automated via **CI/CD (Jenkins)** and is designed to self-heal and scale horizontally based on live traffic demands.
+This project demonstrates a high-availability cloud modernization journey. We migrated a static monolithic site into a dynamic **Python Flask microservice** that provides real-time observability of Kubernetes pod resources. [cite_start]The infrastructure is fully automated via **CI/CD (Jenkins)** and is designed to self-heal and scale horizontally based on live traffic demands.
 
 ## 🏗️ System Architecture
 This diagram represents the automated lifecycle from infrastructure provisioning via **Terraform** to configuration management via **Ansible** and deployment via **Kubernetes**.
@@ -34,7 +34,6 @@ graph TD
     end
 
     User[User / Load Test Script] -->|Port 30008| NP
-
 ## 🏗️ Architecture & Tech Stack
 * **Cloud Platform**: AWS (EC2/EKS)
 * **Orchestration**: Kubernetes (Deployments, NodePort Service, HPA)
