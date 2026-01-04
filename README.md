@@ -1,55 +1,52 @@
-# High-Availability AWS Infrastructure & Monolith-to-Microservices Migration
+# 🚀 AWS Cloud-Scaling Infrastructure & Real-Time Pod Monitoring
+
+![Build Status](https://img.shields.io/badge/Jenkins-Pipeline--Success-green) ![Kubernetes](https://img.shields.io/badge/K8s-HPA--Active-blue) ![AWS](https://img.shields.io/badge/AWS-EKS/EC2-orange)
 
 ## 📝 Project Overview
+This project demonstrates a high-availability cloud modernization journey. We migrated a static monolithic site into a dynamic **Python Flask microservice** that provides real-time observability of Kubernetes pod resources. The infrastructure is fully automated via **CI/CD (Jenkins)** and is designed to self-heal and scale horizontally based on live traffic demands.
 
-A cloud modernization project focused on migrating a legacy monolithic application to a scalable, containerized microservices architecture on AWS. Featuring a self-healing Kubernetes cluster with 2+ replicas and automated infrastructure management via Terraform.
 
----
 
-## 🚀 DevOps Lifecycle & Workflow
+## 🏗️ Architecture & Tech Stack
+* **Cloud Platform**: AWS (EC2/EKS)
+* **Orchestration**: Kubernetes (Deployments, NodePort Service, HPA)
+* **CI/CD**: Jenkins Pipeline with Docker Hub integration
+* **Application**: Python 3.9 Flask app utilizing `psutil` for system metrics
+* **Containerization**: Docker (Alpine-based lightweight images)
 
-The DevOps lifecycle is designed to be fully automated and integrated. The following steps outline the entire process:
+## ⚡ Key Features
+* **Dynamic Monitoring**: A live web dashboard showing real-time CPU and Memory usage per pod.
+* **Horizontal Pod Autoscaling (HPA)**: Automatically scales the application from **2 to 10 replicas** when CPU usage exceeds 50%.
+* **Zero-Downtime Reliability**: Implemented Rolling Updates and Readiness Probes to ensure the application remains online during deployments.
+* **Automated Versioning**: Jenkins automatically injects the Build ID into the application UI at runtime for full traceability.
 
-1.  **Git Workflow**: The project uses a **Git workflow** to manage version control. The master branch is the source for all production releases, which are scheduled to occur on the 25th of every month.
+## 🛠️ Challenges Faced & Solutions
 
-2.  **Jenkins Pipeline**: A **Jenkins Pipeline script** is the core of this project, orchestrating the entire CI/CD process.
+### 1. The "Metrics API Not Available" Error
+* **Challenge**: After setting up HPA, the targets showed `<unknown>/50%`, and `kubectl top pods` failed.
+* **Solution**: Successfully installed the **Kubernetes Metrics Server**. Because the cluster used self-signed certificates, I had to patch the metrics-server deployment with the `--kubelet-insecure-tls` flag to enable secure communication between the API and the nodes.
 
-3.  **CodeBuild Trigger**: Any commit made to the master branch automatically triggers the Jenkins pipeline.
+### 2. Python Environment Conflicts (PEP 668)
+* **Challenge**: While running the load test script on Ubuntu, the `pip install` command failed with an `externally-managed-environment` error.
+* **Solution**: Implemented a **Python Virtual Environment (`venv`)** to isolate the project dependencies (`requests`), ensuring a clean installation without risking OS-level stability.
 
-4.  **Containerization**:
-    * The pipeline uses a **Dockerfile** to create a custom Docker image of the web application.
-    * This Docker image is built and pushed to **Docker Hub** with every new commit.
+### 3. CI/CD Pipeline Syntax
+* **Challenge**: Encountered "Unsupported map entry expression" errors in Jenkins when incorporating metadata into the pipeline script.
+* **Solution**: Cleaned the `Jenkinsfile` Groovy syntax, ensuring all shell commands (`sh`) and environment variables were correctly formatted for the Jenkins DSL.
 
-5.  **Kubernetes Deployment**:
-    * The pipeline deploys the containerized code to a **Kubernetes cluster**.
-    * The application is configured to run with **2 replicas** to ensure high availability and load balancing.
-    * A **NodePort service** is created and configured on port `30008` to expose the application to external traffic.
+## 🚀 How to Run the Stress Test
+To see the autoscaling in action, I developed a multi-threaded **Load Test script**:
 
-6.  **Infrastructure Management**:
-    * **Terraform** is used to provision all the necessary infrastructure on **AWS**, ensuring a consistent and reproducible environment.
-    * A **configuration management tool** is used to install and configure essential software on the servers.
-
----
-
-## 🛠️ Infrastructure & Tools
-
-| Tool/Technology | Role in Project |
-| :--- | :--- |
-| **AWS** | Cloud provider for hosting the entire infrastructure. |
-| **Terraform** | Infrastructure as Code (IaC) tool for creating and managing AWS resources. |
-| **Configuration Management** | Tool (e.g., Ansible, Chef) to automate software installation and configuration on servers. |
-| **Git** | Version control system for the application code. |
-| **Jenkins** | Automation server for orchestrating the CI/CD pipeline. |
-| **Docker** | Containerization platform for packaging the application and its dependencies. |
-| **Kubernetes** | Container orchestration platform for deploying, scaling, and managing the application containers. |
+1.  **Activate Environment**: `source loadtest_env/bin/activate`
+2.  **Run Test**: `python3 load_test.py`
+3.  **Monitor Scaling**:
+    * Watch the web dashboard rise to ~70%+ CPU usage.
+    * Watch terminal: `kubectl get hpa -w` to see replicas jump from 2 to 10.
 
 ---
 
-## ⚙️ Server Configuration
+### 🔗 Project Links
+* **GitHub Repository**: [mahesh-devops24/aws-cloud-scaling-infra](https://github.com/mahesh-devops24/aws-cloud-scaling-infra.git)
+* **Deployment Port**: NodePort 30008
 
-To support the pipeline, specific software is installed on each worker machine using a configuration management tool:
-
-* **Worker1**: `Jenkins`, `Java`
-* **Worker2**: `Docker`, `Kubernetes`
-* **Worker3**: `Java`, `Docker`, `Kubernetes`
-* **Worker4**: `Docker`, `Kubernetes`
+---
