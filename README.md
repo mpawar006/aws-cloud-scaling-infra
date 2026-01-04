@@ -5,7 +5,35 @@
 ## 📝 Project Overview
 This project demonstrates a high-availability cloud modernization journey. We migrated a static monolithic site into a dynamic **Python Flask microservice** that provides real-time observability of Kubernetes pod resources. The infrastructure is fully automated via **CI/CD (Jenkins)** and is designed to self-heal and scale horizontally based on live traffic demands.
 
+## 🏗️ System Architecture
+This diagram represents the automated lifecycle from infrastructure provisioning via **Terraform** to configuration management via **Ansible** and deployment via **Kubernetes**.
 
+```mermaid
+graph TD
+    subgraph "Local Environment"
+        PC[Laptop / Local PC] -->|Terraform Apply| AWS((AWS Cloud))
+    end
+
+    subgraph "AWS Infrastructure (us-east-1)"
+        subgraph "CI/CD & Config Management"
+            JM[Jenkins-M / Ansible Server] -->|Ansible Playbook| K8M[K8-M Master Node]
+            JM -->|Ansible Playbook| WK[Worker / K8 Node]
+            JM -->|Build & Push| DH[Docker Hub]
+        end
+
+        subgraph "Kubernetes Cluster"
+            K8M -->|Orchestrates| WK
+            DH -->|Pulls Image| WK
+            
+            subgraph "K8s Worker Node"
+                NP[NodePort Service: 30008] --> Pod1[Flask Pod 1]
+                NP --> Pod2[Flask Pod 2]
+                HPA[HPA: 2-10 Pods] -.->|Monitors CPU| Pod1
+            end
+        end
+    end
+
+    User[User / Load Test Script] -->|Port 30008| NP
 
 ## 🏗️ Architecture & Tech Stack
 * **Cloud Platform**: AWS (EC2/EKS)
