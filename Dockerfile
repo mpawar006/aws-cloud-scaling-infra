@@ -1,8 +1,17 @@
-# ─── Lightweight 15 MB Apache image ────────────────────────────────────────────
-FROM httpd:2.4-alpine
+# Use a lightweight Python-Alpine image
+FROM python:3.9-alpine
 
-# Copy everything in the repo (HTML + images + any CSS/JS) to the web root
-COPY . /usr/local/apache2/htdocs/
+# Install build dependencies for psutil
+RUN apk add --no-cache gcc musl-dev linux-headers
 
-# Expose port 80 (already the default for httpd)
+WORKDIR /app
+
+# Install Flask and psutil
+RUN pip install --no-cache-dir flask psutil
+
+# Copy app files
+COPY . .
+
 EXPOSE 80
+
+CMD ["python", "app.py"]
