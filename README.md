@@ -15,25 +15,29 @@ graph TD
     end
 
     subgraph "AWS Infrastructure (us-east-1)"
-        subgraph "CI/CD & Config Management"
-            JM[Jenkins-M / Ansible Server] -->|Ansible Playbook| K8M[K8-M Master Node]
-            JM -->|Ansible Playbook| WK[Worker / K8 Node]
-            JM -->|Build & Push| DH[Docker Hub]
+        subgraph "CI/CD Control Plane"
+            JM[Jenkins-M / Ansible Server] -->|Orchestrates| K8M
+            JM -->|Ansible Config| WK[Worker / K8 Node]
         end
 
         subgraph "Kubernetes Cluster"
-            K8M -->|Orchestrates| WK
-            DH -->|Pulls Image| WK
+            subgraph "K8-M (Master Node & Jenkins Agent)"
+                K8M[K8-M Node] -->|1. Git Clone| Git[GitHub Repo]
+                K8M -->|2. Docker Build/Push| DH[Docker Hub]
+                K8M -->|3. Orchestrates| WK
+            end
             
-            subgraph "K8s Worker Node"
-                NP[NodePort Service: 30008] --> Pod1[Flask Pod 1]
-                NP --> Pod2[Flask Pod 2]
-                HPA[HPA: 2-10 Pods] -.->|Monitors CPU| Pod1
+            subgraph "Worker Node"
+                DH -->|4. Pulls Image| WK
+                subgraph "K8s Worker Pods"
+                    NP[NodePort: 30008] --> Pods[Flask Pods 1-10]
+                    HPA[HPA] -.->|Monitors CPU| Pods
+                end
             end
         end
     end
 
-    User[User / Load Test Script] -->|Port 30008| NP
+    User[User / Load Test Script] -->|Traffic: 30008| NP
 ```
 ## 🏗️ Architecture & Tech Stack
 * **Cloud Platform**: AWS (EC2/EKS)
