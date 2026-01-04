@@ -1,4 +1,4 @@
-# High-Availability AWS Infrastructure & Monolith-to-Microservices Migration.
+# High-Availability AWS Infrastructure & Monolith-to-Microservices Migration
 
 ## 📝 Project Overview
 
