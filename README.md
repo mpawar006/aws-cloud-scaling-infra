@@ -33,7 +33,7 @@ graph TD
         end
     end
 
-    User[User / Load Test Script] -->|Port 30008| NP
+    User[User / Load Test Script] -->|Port 30008| NP```
 ## 🏗️ Architecture & Tech Stack
 * **Cloud Platform**: AWS (EC2/EKS)
 * **Orchestration**: Kubernetes (Deployments, NodePort Service, HPA)
