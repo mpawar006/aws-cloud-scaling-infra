@@ -20,7 +20,10 @@ spec:
       # - name: regcred
       containers:
       - name: website
-        image: mpawar006/project2:latest        # Jenkins replaces :latest at deploy
+        image: mpawar006/project2:latest
+        env:
+        - name: BUILD_ID
+          value: "REPLACE_ME" # Jenkins will swap this
         ports:
         - containerPort: 80
         livenessProbe:
