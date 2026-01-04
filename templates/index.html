@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>OpsTimer | Pod Metrics Dashboard</title>
+    <style>
+        body { background: #121212; color: #00ff41; font-family: 'Courier New', monospace; text-align: center; padding-top: 50px; }
+        .metric-card { border: 2px solid #00ff41; display: inline-block; padding: 20px; border-radius: 10px; margin: 10px; width: 250px; }
+        .value { font-size: 32px; color: #fff; text-shadow: 0 0 5px #00ff41; }
+    </style>
+</head>
+<body>
+    <h3>LIVE K8S POD METRICS</h3>
+    <div class="metric-card">
+        <div>CPU USAGE</div>
+        <div id="cpu" class="value">0%</div>
+    </div>
+    <div class="metric-card">
+        <div>MEMORY USAGE</div>
+        <div id="mem" class="value">0%</div>
+    </div>
+    <p>Build Version: #{{ build_id }}</p>
+
+    <script>
+        async function updateMetrics() {
+            const response = await fetch('/metrics');
+            const data = await response.json();
+            document.getElementById('cpu').innerText = data.cpu + "%";
+            document.getElementById('mem').innerText = data.memory_percent + "%";
+        }
+        setInterval(updateMetrics, 3000);
+    </script>
+</body>
+</html>
