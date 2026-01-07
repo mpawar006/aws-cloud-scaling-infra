@@ -80,7 +80,7 @@ To see the autoscaling in action, I developed a multi-threaded **Load Test scrip
 ---
 
 ### 🔗 Project Links
-* **GitHub Repository**: [mahesh-devops24/aws-cloud-scaling-infra](https://github.com/mahesh-devops24/aws-cloud-scaling-infra.git)
+* **GitHub Repository**: [mpawar006/aws-cloud-scaling-infra](https://github.com/mpawar006/aws-cloud-scaling-infra.git)
 * **Deployment Port**: NodePort 30008
 
 ---
