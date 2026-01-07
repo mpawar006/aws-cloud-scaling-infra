@@ -16,7 +16,7 @@ pipeline {
             steps {
                 sh 'sudo docker build . -t mpawar006/aws-cloud-scaling-infra'
                 sh 'sudo docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}'
-                sh 'sudo docker push mpawar006/project2'
+                sh 'sudo docker push mpawar006/aws-cloud-scaling-infra'
             }
         }
 
