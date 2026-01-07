@@ -20,7 +20,7 @@ spec:
       # - name: regcred
       containers:
       - name: website
-        image: mpawar006/project2:latest
+        image: mpawar006/aws-cloud-scaling-infra:latest
         env:
         - name: BUILD_ID
           value: "REPLACE_ME" # Jenkins will swap this
